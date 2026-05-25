@@ -1,0 +1,99 @@
+digraph Esquema_Almacenamiento_QuindioFlix {
+    graph [
+        label="ESQUEMA DE ALMACENAMIENTO - QUINDIOFLIX"
+        rankdir=LR
+        pad=0.35
+        nodesep=0.45
+        ranksep=0.9
+        fontsize=18
+        fontname="Arial Bold"
+        bgcolor=white
+    ];
+
+    node [shape=plain fontname="Arial" fontsize=10];
+    edge [color="#495057" penwidth=1.1 arrowsize=0.5 fontname="Arial Bold" fontsize=9];
+
+    BD [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#343a40">
+<TR><TD><FONT COLOR="white"><B>BASE DE DATOS QUINDIOFLIX</B></FONT></TD></TR>
+</TABLE>>];
+
+    TS_DATA [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#d4edda">
+<TR><TD COLSPAN="2" BGCOLOR="#28a745"><FONT COLOR="white"><B>ts_quindioflix_data</B></FONT></TD></TR>
+<TR><TD><B>Estado</B></TD><TD>ONLINE</TD></TR>
+<TR><TD><B>Datafile</B></TD><TD>quindioflix_data01.dbf</TD></TR>
+<TR><TD><B>Tamano inicial</B></TD><TD>100 MB</TD></TR>
+<TR><TD><B>Autoextend</B></TD><TD>50 MB</TD></TR>
+<TR><TD><B>Maximo</B></TD><TD>500 MB</TD></TR>
+</TABLE>>];
+
+    TS_INDX [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#d1ecf1">
+<TR><TD COLSPAN="2" BGCOLOR="#17a2b8"><FONT COLOR="white"><B>ts_quindioflix_indx</B></FONT></TD></TR>
+<TR><TD><B>Estado</B></TD><TD>ONLINE</TD></TR>
+<TR><TD><B>Datafile</B></TD><TD>quindioflix_indx01.dbf</TD></TR>
+<TR><TD><B>Tamano inicial</B></TD><TD>50 MB</TD></TR>
+<TR><TD><B>Autoextend</B></TD><TD>25 MB</TD></TR>
+<TR><TD><B>Maximo</B></TD><TD>200 MB</TD></TR>
+</TABLE>>];
+
+    TABLAS_DATA [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#f8fff9">
+<TR><TD BGCOLOR="#6cc070"><B>Tablas asignadas</B></TD></TR>
+<TR><TD ALIGN="LEFT">PLAN, CATEGORIA, GENERO, DEPARTAMENTO</TD></TR>
+<TR><TD ALIGN="LEFT">EMPLEADO</TD></TR>
+<TR><TD ALIGN="LEFT">CONTENIDO, CONTENIDO_GENERO</TD></TR>
+<TR><TD ALIGN="LEFT">CONTENIDO_RELACIONADO, TEMPORADA, EPISODIO</TD></TR>
+<TR><TD ALIGN="LEFT">USUARIO, PERFIL, REFERIDO</TD></TR>
+<TR><TD ALIGN="LEFT">REPRODUCCION, FAVORITO, RESENA, REPORTE</TD></TR>
+<TR><TD ALIGN="LEFT">FACTURA, PAGO</TD></TR>
+</TABLE>>];
+
+    PARTICION [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#fff3cd">
+<TR><TD BGCOLOR="#ffc107"><B>Fragmentacion de REPRODUCCION</B></TD></TR>
+<TR><TD ALIGN="LEFT">PARTITION BY RANGE(fecha_inicio)</TD></TR>
+<TR><TD ALIGN="LEFT">p2025: valores menores a 2026</TD></TR>
+<TR><TD ALIGN="LEFT">p2026: valores menores a 2027</TD></TR>
+<TR><TD ALIGN="LEFT">p_max: valores posteriores</TD></TR>
+</TABLE>>];
+
+    INDICES [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#eefcff">
+<TR><TD BGCOLOR="#5bc0de"><B>Indices asignados</B></TD></TR>
+<TR><TD ALIGN="LEFT">Indices sobre contenido</TD></TR>
+<TR><TD ALIGN="LEFT">Indices sobre usuario y perfil</TD></TR>
+<TR><TD ALIGN="LEFT">Indices sobre reproduccion</TD></TR>
+<TR><TD ALIGN="LEFT">Indices sobre resena y reporte</TD></TR>
+<TR><TD ALIGN="LEFT">Indices sobre pago y factura</TD></TR>
+</TABLE>>];
+
+    JUST_DATA [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#f8fff9">
+<TR><TD BGCOLOR="#6cc070"><B>Justificacion</B></TD></TR>
+<TR><TD ALIGN="LEFT">Centraliza la informacion operativa</TD></TR>
+<TR><TD ALIGN="LEFT">Facilita crecimiento de tablas</TD></TR>
+<TR><TD ALIGN="LEFT">Soporta la tabla de mayor volumen</TD></TR>
+</TABLE>>];
+
+    JUST_INDX [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#eefcff">
+<TR><TD BGCOLOR="#5bc0de"><B>Justificacion</B></TD></TR>
+<TR><TD ALIGN="LEFT">Separa estructuras de acceso</TD></TR>
+<TR><TD ALIGN="LEFT">Mejora mantenimiento y rendimiento</TD></TR>
+<TR><TD ALIGN="LEFT">Controla crecimiento de indices</TD></TR>
+</TABLE>>];
+
+    BD -> TS_DATA;
+    BD -> TS_INDX;
+    TS_DATA -> TABLAS_DATA;
+    TS_DATA -> PARTICION;
+    TS_DATA -> JUST_DATA;
+    TS_INDX -> INDICES;
+    TS_INDX -> JUST_INDX;
+
+    {rank=same; TS_DATA; TS_INDX}
+    {rank=same; TABLAS_DATA; INDICES}
+    {rank=same; PARTICION; JUST_INDX}
+}

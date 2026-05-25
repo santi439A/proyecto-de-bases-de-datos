@@ -1,0 +1,136 @@
+digraph QuindioFlix_Logico_Parte_1 {
+    graph [
+        label="DIAGRAMA LOGICO RELACIONAL - QUINDIOFLIX\nParte 1: Catalogo y estructura interna"
+        rankdir=TB
+        newrank=true
+        nodesep=0.65
+        ranksep=0.95
+        pad=0.25
+        margin=0.1
+        dpi=150
+        fontsize=16
+        fontname="Arial Bold"
+        bgcolor=white
+    ];
+
+    node [shape=plain fontname="Arial" fontsize=9];
+    edge [color="#495057" penwidth=1.0 arrowsize=0.42 fontname="Arial Bold" fontsize=8];
+
+    subgraph cluster_maestras {
+        label="TABLAS MAESTRAS";
+        style=filled;
+        color="#28a745";
+        bgcolor="#f4fff6";
+
+        CATEGORIA [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#d4edda">
+<TR><TD COLSPAN="3" BGCOLOR="#28a745"><FONT COLOR="white"><B>CATEGORIA</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>categoria_id</U></TD><TD>NUMBER(2)</TD></TR>
+<TR><TD></TD><TD>nombre</TD><TD>VARCHAR2(30) NOT NULL UNIQUE</TD></TR>
+</TABLE>>];
+
+        GENERO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#d4edda">
+<TR><TD COLSPAN="3" BGCOLOR="#28a745"><FONT COLOR="white"><B>GENERO</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>genero_id</U></TD><TD>NUMBER(3)</TD></TR>
+<TR><TD></TD><TD>nombre</TD><TD>VARCHAR2(50) NOT NULL UNIQUE</TD></TR>
+</TABLE>>];
+
+        DEPARTAMENTO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#d4edda">
+<TR><TD COLSPAN="3" BGCOLOR="#28a745"><FONT COLOR="white"><B>DEPARTAMENTO</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>departamento_id</U></TD><TD>NUMBER(3)</TD></TR>
+<TR><TD></TD><TD>nombre</TD><TD>VARCHAR2(50) NOT NULL UNIQUE</TD></TR>
+<TR><TD><B>FK</B></TD><TD>jefe_id</TD><TD>NUMBER(5)</TD></TR>
+</TABLE>>];
+    }
+
+    subgraph cluster_equipo {
+        label="EQUIPO DE TRABAJO";
+        style=filled;
+        color="#17a2b8";
+        bgcolor="#eefcff";
+
+        EMPLEADO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#d1ecf1">
+<TR><TD COLSPAN="3" BGCOLOR="#17a2b8"><FONT COLOR="white"><B>EMPLEADO</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>empleado_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD></TD><TD>nombre</TD><TD>VARCHAR2(100) NOT NULL</TD></TR>
+<TR><TD></TD><TD>email</TD><TD>VARCHAR2(100) NOT NULL UNIQUE</TD></TR>
+<TR><TD></TD><TD>telefono</TD><TD>VARCHAR2(20)</TD></TR>
+<TR><TD></TD><TD>cargo</TD><TD>VARCHAR2(50) NOT NULL</TD></TR>
+<TR><TD><B>FK</B></TD><TD>departamento_id</TD><TD>NUMBER(3) NOT NULL</TD></TR>
+<TR><TD><B>FK</B></TD><TD>supervisor_id</TD><TD>NUMBER(5)</TD></TR>
+</TABLE>>];
+    }
+
+    subgraph cluster_catalogo {
+        label="CATALOGO MULTIMEDIA";
+        style=filled;
+        color="#007bff";
+        bgcolor="#f2f8ff";
+
+        CONTENIDO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e8f4fd">
+<TR><TD COLSPAN="3" BGCOLOR="#007bff"><FONT COLOR="white"><B>CONTENIDO</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>contenido_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD><B>FK</B></TD><TD>categoria_id</TD><TD>NUMBER(2) NOT NULL</TD></TR>
+<TR><TD></TD><TD>titulo</TD><TD>VARCHAR2(200) NOT NULL</TD></TR>
+<TR><TD></TD><TD>anno_lanzamiento</TD><TD>NUMBER(4) NOT NULL</TD></TR>
+<TR><TD></TD><TD>duracion_minutos</TD><TD>NUMBER(5)</TD></TR>
+<TR><TD></TD><TD>sinopsis</TD><TD>CLOB</TD></TR>
+<TR><TD></TD><TD>clasificacion_edad</TD><TD>VARCHAR2(5) CHECK(IN('TP','+7','+13','+16','+18'))</TD></TR>
+<TR><TD></TD><TD>fecha_agregado</TD><TD>DATE NOT NULL</TD></TR>
+<TR><TD></TD><TD>es_original</TD><TD>NUMBER(1) CHECK(IN(0,1))</TD></TR>
+<TR><TD><B>FK</B></TD><TD>empleado_responsable_id</TD><TD>NUMBER(5) NOT NULL</TD></TR>
+</TABLE>>];
+
+        CONTENIDO_GENERO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e8f4fd">
+<TR><TD COLSPAN="3" BGCOLOR="#007bff"><FONT COLOR="white"><B>CONTENIDO_GENERO</B></FONT></TD></TR>
+<TR><TD><B>PK,FK</B></TD><TD><U>contenido_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD><B>PK,FK</B></TD><TD><U>genero_id</U></TD><TD>NUMBER(3)</TD></TR>
+</TABLE>>];
+
+        CONTENIDO_RELACIONADO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e8f4fd">
+<TR><TD COLSPAN="3" BGCOLOR="#007bff"><FONT COLOR="white"><B>CONTENIDO_RELACIONADO</B></FONT></TD></TR>
+<TR><TD><B>PK,FK</B></TD><TD><U>contenido_origen_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD><B>PK,FK</B></TD><TD><U>contenido_relacionado_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD></TD><TD>tipo_relacion</TD><TD>VARCHAR2(30) NOT NULL</TD></TR>
+</TABLE>>];
+
+        TEMPORADA [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e8f4fd">
+<TR><TD COLSPAN="3" BGCOLOR="#007bff"><FONT COLOR="white"><B>TEMPORADA</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>temporada_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD><B>FK</B></TD><TD>contenido_id</TD><TD>NUMBER(5) NOT NULL</TD></TR>
+<TR><TD></TD><TD>numero</TD><TD>NUMBER(2) NOT NULL</TD></TR>
+</TABLE>>];
+
+        EPISODIO [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e8f4fd">
+<TR><TD COLSPAN="3" BGCOLOR="#007bff"><FONT COLOR="white"><B>EPISODIO</B></FONT></TD></TR>
+<TR><TD><B>PK</B></TD><TD><U>episodio_id</U></TD><TD>NUMBER(5)</TD></TR>
+<TR><TD><B>FK</B></TD><TD>temporada_id</TD><TD>NUMBER(5) NOT NULL</TD></TR>
+<TR><TD></TD><TD>numero</TD><TD>NUMBER(3) NOT NULL</TD></TR>
+<TR><TD></TD><TD>titulo</TD><TD>VARCHAR2(200) NOT NULL</TD></TR>
+<TR><TD></TD><TD>duracion_minutos</TD><TD>NUMBER(5) NOT NULL</TD></TR>
+</TABLE>>];
+    }
+
+    DEPARTAMENTO -> EMPLEADO [label="1:N"];
+    DEPARTAMENTO -> EMPLEADO [label="1:1 jefe" style=dashed color="#17a2b8" constraint=false];
+    EMPLEADO -> EMPLEADO [label="1:N supervisa" style=dashed color="#17a2b8"];
+    EMPLEADO -> CONTENIDO [label="1:N responsable" color="#007bff"];
+    CATEGORIA -> CONTENIDO [label="1:N"];
+    CONTENIDO -> CONTENIDO_GENERO [label="1:N"];
+    GENERO -> CONTENIDO_GENERO [label="1:N"];
+    CONTENIDO -> CONTENIDO_RELACIONADO [label="1:N reflexiva" style=dashed];
+    CONTENIDO -> TEMPORADA [label="1:N"];
+    TEMPORADA -> EPISODIO [label="1:N"];
+
+    {rank=same; CATEGORIA; GENERO; DEPARTAMENTO}
+    {rank=same; EMPLEADO; CONTENIDO}
+    {rank=same; CONTENIDO_GENERO; CONTENIDO_RELACIONADO; TEMPORADA; EPISODIO}
+}

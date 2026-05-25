@@ -1,0 +1,364 @@
+digraph QuindioFlix_MER {
+    graph [
+        label="MODELO ENTIDAD-RELACIÓN (MER) - QUINDIOFLIX\nPlataforma de Streaming de Contenido Multimedia"
+        rankdir=LR
+        nodesep=1.2
+        ranksep=2.5
+        pad=1.2
+        fontsize=18
+        fontname="Arial Bold"
+        style=filled
+        fillcolor=white
+        bgcolor=white
+    ];
+    
+    edge [
+        color="#495057"
+        penwidth=1.2
+        arrowsize=0.5
+        minlen=2.5
+        labeldistance=3
+        labelfontsize=9
+        labelfontname="Arial Bold"
+    ];
+    
+    node [
+        shape=plain
+        fontname="Arial"
+        fontsize=10
+    ];
+
+    // =====================================================
+    // CAPA 1: ENTIDADES MAESTRAS
+    // =====================================================
+    
+    subgraph cluster_maestro {
+        label="CAPA 1: ENTIDADES MAESTRAS"
+        bgcolor="#f0fff0"
+        fontname="Arial Bold"
+        fontsize=14
+        style=filled
+        penwidth=2
+        color="#28a745"
+        
+        "PLAN" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#d4edda">
+<TR><TD COLSPAN="1" bgcolor="#28a745" align="center" colspan="2"><FONT COLOR="white"><B>PLAN</B></FONT></TD></TR>
+<TR><TD align="left"><U>plan_id</U></TD><TD></TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+<TR><TD align="left">precio</TD><TD></TD></TR>
+<TR><TD align="left">num_pantallas</TD><TD></TD></TR>
+<TR><TD align="left">calidad</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "GENERO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#d4edda">
+<TR><TD COLSPAN="1" bgcolor="#28a745" align="center" colspan="2"><FONT COLOR="white"><B>GENERO</B></FONT></TD></TR>
+<TR><TD align="left"><U>genero_id</U></TD><TD></TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "DEPARTAMENTO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#d4edda">
+<TR><TD COLSPAN="1" bgcolor="#28a745" align="center" colspan="2"><FONT COLOR="white"><B>DEPARTAMENTO</B></FONT></TD></TR>
+<TR><TD align="left"><U>departamento_id</U></TD><TD></TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+<TR><TD align="left">jefe_id</TD><TD>(FK)</TD></TR>
+</TABLE>>
+        ];
+        
+        "EMPLEADO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#d4edda">
+<TR><TD COLSPAN="1" bgcolor="#28a745" align="center" colspan="2"><FONT COLOR="white"><B>EMPLEADO</B></FONT></TD></TR>
+<TR><TD align="left"><U>empleado_id</U></TD><TD></TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+<TR><TD align="left">email</TD><TD></TD></TR>
+<TR><TD align="left">telefono</TD><TD></TD></TR>
+<TR><TD align="left">departamento_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">supervisor_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">cargo</TD><TD></TD></TR>
+</TABLE>>
+        ];
+    }
+
+    // =====================================================
+    // CAPA 2: CONTENIDO
+    // =====================================================
+    
+    subgraph cluster_contenido {
+        label="CAPA 2: CONTENIDO MULTIMEDIA"
+        bgcolor="#f0f8ff"
+        fontname="Arial Bold"
+        fontsize=14
+        style=filled
+        penwidth=2
+        color="#007bff"
+        
+        "CONTENIDO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#e8f4fd">
+<TR><TD COLSPAN="1" bgcolor="#007bff" align="center" colspan="2"><FONT COLOR="white"><B>CONTENIDO</B></FONT></TD></TR>
+<TR><TD align="left"><U>contenido_id</U></TD><TD></TD></TR>
+<TR><TD align="left">titulo</TD><TD></TD></TR>
+<TR><TD align="left">anno_lanzamiento</TD><TD></TD></TR>
+<TR><TD align="left">duracion</TD><TD></TD></TR>
+<TR><TD align="left">sinopsis</TD><TD></TD></TR>
+<TR><TD align="left">clasificacion_edad</TD><TD></TD></TR>
+<TR><TD align="left">fecha_agregado</TD><TD></TD></TR>
+<TR><TD align="left">tipo</TD><TD></TD></TR>
+<TR><TD align="left">es_original</TD><TD></TD></TR>
+<TR><TD align="left">contenido_relacionado_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">tipo_relacion</TD><TD></TD></TR>
+<TR><TD align="left">empleado_id</TD><TD>(FK)</TD></TR>
+</TABLE>>
+        ];
+        
+        "CONTENIDO_GENERO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#e8f4fd">
+<TR><TD COLSPAN="1" bgcolor="#007bff" align="center" colspan="2"><FONT COLOR="white"><B>CONTENIDO_GENERO</B></FONT></TD></TR>
+<TR><TD align="left"><U>contenido_genero_id</U></TD><TD></TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">genero_id</TD><TD>(FK)</TD></TR>
+</TABLE>>
+        ];
+        
+        "TEMPORADA" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#e8f4fd">
+<TR><TD COLSPAN="1" bgcolor="#007bff" align="center" colspan="2"><FONT COLOR="white"><B>TEMPORADA</B></FONT></TD></TR>
+<TR><TD align="left"><U>temporada_id</U></TD><TD></TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">numero</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "EPISODIO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#e8f4fd">
+<TR><TD COLSPAN="1" bgcolor="#007bff" align="center" colspan="2"><FONT COLOR="white"><B>EPISODIO</B></FONT></TD></TR>
+<TR><TD align="left"><U>episodio_id</U></TD><TD></TD></TR>
+<TR><TD align="left">temporada_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">numero</TD><TD></TD></TR>
+<TR><TD align="left">titulo</TD><TD></TD></TR>
+<TR><TD align="left">duracion</TD><TD></TD></TR>
+</TABLE>>
+        ];
+    }
+
+    // =====================================================
+    // CAPA 3: USUARIOS
+    // =====================================================
+    
+    subgraph cluster_usuarios {
+        label="CAPA 3: USUARIOS Y PERFILES"
+        bgcolor="#fffcf0"
+        fontname="Arial Bold"
+        fontsize=14
+        style=filled
+        penwidth=2
+        color="#ffc107"
+        
+        "USUARIO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#fff3cd">
+<TR><TD COLSPAN="1" bgcolor="#ffc107" align="center" colspan="2"><FONT COLOR="white"><B>USUARIO</B></FONT></TD></TR>
+<TR><TD align="left"><U>usuario_id</U></TD><TD></TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+<TR><TD align="left">email</TD><TD></TD></TR>
+<TR><TD align="left">telefono</TD><TD></TD></TR>
+<TR><TD align="left">fecha_nacimiento</TD><TD></TD></TR>
+<TR><TD align="left">ciudad_residencia</TD><TD></TD></TR>
+<TR><TD align="left">plan_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">fecha_registro</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "PERFIL" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#fff3cd">
+<TR><TD COLSPAN="1" bgcolor="#ffc107" align="center" colspan="2"><FONT COLOR="white"><B>PERFIL</B></FONT></TD></TR>
+<TR><TD align="left"><U>perfil_id</U></TD><TD></TD></TR>
+<TR><TD align="left">usuario_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">nombre</TD><TD></TD></TR>
+<TR><TD align="left">avatar</TD><TD></TD></TR>
+<TR><TD align="left">tipo</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "REFERIDO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#fff3cd">
+<TR><TD COLSPAN="1" bgcolor="#ffc107" align="center" colspan="2"><FONT COLOR="white"><B>REFERIDO</B></FONT></TD></TR>
+<TR><TD align="left"><U>referido_id</U></TD><TD></TD></TR>
+<TR><TD align="left">usuario_referidor_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">usuario_referido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">beneficio</TD><TD></TD></TR>
+<TR><TD align="left">fecha</TD><TD></TD></TR>
+</TABLE>>
+        ];
+    }
+
+    // =====================================================
+    // CAPA 4: CONSUMO
+    // =====================================================
+    
+    subgraph cluster_consumo {
+        label="CAPA 4: CONSUMO Y REPRODUCCIONES"
+        bgcolor="#fff0f5"
+        fontname="Arial Bold"
+        fontsize=14
+        style=filled
+        penwidth=2
+        color="#e83e8c"
+        
+        "REPRODUCCION" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#e83e8c" align="center" colspan="2"><FONT COLOR="white"><B>REPRODUCCION</B></FONT></TD></TR>
+<TR><TD align="left"><U>reproduccion_id</U></TD><TD></TD></TR>
+<TR><TD align="left">perfil_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">episodio_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">fecha_inicio</TD><TD></TD></TR>
+<TR><TD align="left">fecha_fin</TD><TD></TD></TR>
+<TR><TD align="left">dispositivo</TD><TD></TD></TR>
+<TR><TD align="left">porcentaje_avance</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "FAVORITO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#e83e8c" align="center" colspan="2"><FONT COLOR="white"><B>FAVORITO</B></FONT></TD></TR>
+<TR><TD align="left"><U>favorito_id</U></TD><TD></TD></TR>
+<TR><TD align="left">perfil_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">fecha_agregado</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "RESENA" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#e83e8c" align="center" colspan="2"><FONT COLOR="white"><B>RESENA</B></FONT></TD></TR>
+<TR><TD align="left"><U>resena_id</U></TD><TD></TD></TR>
+<TR><TD align="left">perfil_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">calificacion</TD><TD></TD></TR>
+<TR><TD align="left">texto</TD><TD></TD></TR>
+<TR><TD align="left">fecha_publicacion</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "REPORTE" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#e83e8c" align="center" colspan="2"><FONT COLOR="white"><B>REPORTE</B></FONT></TD></TR>
+<TR><TD align="left"><U>reporte_id</U></TD><TD></TD></TR>
+<TR><TD align="left">contenido_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">perfil_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">motivo</TD><TD></TD></TR>
+<TR><TD align="left">estado</TD><TD></TD></TR>
+<TR><TD align="left">empleado_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">fecha_reporte</TD><TD></TD></TR>
+<TR><TD align="left">fecha_resolucion</TD><TD></TD></TR>
+</TABLE>>
+        ];
+    }
+
+    // =====================================================
+    // CAPA 5: PAGOS
+    // =====================================================
+    
+    subgraph cluster_pagos {
+        label="CAPA 5: PAGOS Y FACTURAS"
+        bgcolor="#fff5f5"
+        fontname="Arial Bold"
+        fontsize=14
+        style=filled
+        penwidth=2
+        color="#dc3545"
+        
+        "PAGO" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#dc3545" align="center" colspan="2"><FONT COLOR="white"><B>PAGO</B></FONT></TD></TR>
+<TR><TD align="left"><U>pago_id</U></TD><TD></TD></TR>
+<TR><TD align="left">usuario_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">monto</TD><TD></TD></TR>
+<TR><TD align="left">fecha_pago</TD><TD></TD></TR>
+<TR><TD align="left">metodo_pago</TD><TD></TD></TR>
+<TR><TD align="left">referencia</TD><TD></TD></TR>
+</TABLE>>
+        ];
+        
+        "FACTURA" [
+            label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="2" bgcolor="#f8d7da">
+<TR><TD COLSPAN="1" bgcolor="#dc3545" align="center" colspan="2"><FONT COLOR="white"><B>FACTURA</B></FONT></TD></TR>
+<TR><TD align="left"><U>factura_id</U></TD><TD></TD></TR>
+<TR><TD align="left">usuario_id</TD><TD>(FK)</TD></TR>
+<TR><TD align="left">periodo</TD><TD></TD></TR>
+<TR><TD align="left">monto_total</TD><TD></TD></TR>
+<TR><TD align="left">estado</TD><TD></TD></TR>
+<TR><TD align="left">fecha_emision</TD><TD></TD></TR>
+<TR><TD align="left">fecha_vencimiento</TD><TD></TD></TR>
+</TABLE>>
+        ];
+    }
+
+    // =====================================================
+    // RELACIONES CON CARDINALIDADES
+    // =====================================================
+    
+    // CAPA 1 -> CAPA 1
+    "PLAN" -> "USUARIO" [label="1:N" color="#28a745" penwidth=1.5];
+    "DEPARTAMENTO" -> "EMPLEADO" [label="1:N" color="#28a745" penwidth=1.5];
+    "DEPARTAMENTO" -> "DEPARTAMENTO" [label="1:1" color="#28a745" penwidth=1 style=dashed tailport=e headport=e];
+    "EMPLEADO" -> "EMPLEADO" [label="1:N" color="#28a745" penwidth=1 style=dashed tailport=e headport=w];
+    
+    // CAPA 1 -> CAPA 2
+    "EMPLEADO" -> "CONTENIDO" [label="1:N" color="#007bff" penwidth=1.5];
+    
+    // CAPA 2 internas
+    "CONTENIDO" -> "CONTENIDO_GENERO" [label="1:N" color="#007bff" penwidth=1];
+    "GENERO" -> "CONTENIDO_GENERO" [label="1:N" color="#007bff" penwidth=1];
+    "CONTENIDO" -> "TEMPORADA" [label="1:N" color="#007bff" penwidth=1];
+    "TEMPORADA" -> "EPISODIO" [label="1:N" color="#007bff" penwidth=1];
+    "CONTENIDO" -> "CONTENIDO" [label="1:1" color="#007bff" penwidth=1 style=dashed tailport=s headport=n];
+    
+    // CAPA 3
+    "USUARIO" -> "PERFIL" [label="1:N" color="#ffc107" penwidth=1.5];
+    "USUARIO" -> "REFERIDO" [label="N:M" color="#ffc107" penwidth=1.5];
+    "USUARIO" -> "PAGO" [label="1:N" color="#ffc107" penwidth=1.5];
+    "USUARIO" -> "FACTURA" [label="1:N" color="#ffc107" penwidth=1.5];
+    
+    // CAPA 3 -> CAPA 4
+    "PERFIL" -> "REPRODUCCION" [label="1:N" color="#e83e8c" penwidth=1.5];
+    "PERFIL" -> "FAVORITO" [label="1:N" color="#e83e8c" penwidth=1.5];
+    "PERFIL" -> "RESENA" [label="1:N" color="#e83e8c" penwidth=1.5];
+    "PERFIL" -> "REPORTE" [label="1:N" color="#e83e8c" penwidth=1.5];
+    
+    // CAPA 2 -> CAPA 4
+    "CONTENIDO" -> "REPRODUCCION" [label="1:N" color="#e83e8c" penwidth=1];
+    "CONTENIDO" -> "FAVORITO" [label="1:N" color="#e83e8c" penwidth=1];
+    "CONTENIDO" -> "RESENA" [label="1:N" color="#e83e8c" penwidth=1];
+    "CONTENIDO" -> "REPORTE" [label="1:N" color="#e83e8c" penwidth=1];
+    
+    // CAPA 1 -> CAPA 4
+    "EMPLEADO" -> "REPORTE" [label="1:N" color="#dc3545" penwidth=1];
+    
+    // Alineaciones horizontales por capas
+    {rank=same; "PLAN","GENERO","DEPARTAMENTO","EMPLEADO"};
+    {rank=same; "CONTENIDO","CONTENIDO_GENERO","TEMPORADA","EPISODIO"};
+    {rank=same; "USUARIO","PERFIL","REFERIDO"};
+    {rank=same; "REPRODUCCION","FAVORITO","RESENA","REPORTE"};
+    {rank=same; "PAGO","FACTURA"};
+}
