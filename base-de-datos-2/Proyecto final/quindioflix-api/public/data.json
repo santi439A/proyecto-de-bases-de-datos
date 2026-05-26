@@ -1,0 +1,93 @@
+{
+    "usuarios": [
+        {"usuario_id": 1, "nombre": "Andres Perez", "email": "andres@mail.com", "telefono": "3101111111", "fecha_nacimiento": "1985-05-15", "ciudad_residencia": "Armenia", "plan_id": 1, "fecha_registro": "2025-01-10", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 2, "nombre": "Carmen Torres", "email": "carmen@mail.com", "telefono": "3102222222", "fecha_nacimiento": "1990-08-20", "ciudad_residencia": "Bogota", "plan_id": 2, "fecha_registro": "2025-01-15", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 3, "nombre": "Roberto Silva", "email": "roberto@mail.com", "telefono": "3103333333", "fecha_nacimiento": "1978-12-01", "ciudad_residencia": "Medellin", "plan_id": 3, "fecha_registro": "2025-02-01", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 4, "nombre": "Elena Vargas", "email": "elena@mail.com", "telefono": "3104444444", "fecha_nacimiento": "1995-03-25", "ciudad_residencia": "Cali", "plan_id": 1, "fecha_registro": "2025-02-10", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 5, "nombre": "Fernando Morales", "email": "fernando@mail.com", "telefono": "3105555555", "fecha_nacimiento": "1988-11-30", "ciudad_residencia": "Pereira", "plan_id": 2, "fecha_registro": "2025-03-01", "estado_cuenta": "SUSPENDIDO"},
+        {"usuario_id": 6, "nombre": "Patricia Rojas", "email": "patricia@mail.com", "telefono": "3106666666", "fecha_nacimiento": "1992-07-14", "ciudad_residencia": "Armenia", "plan_id": 3, "fecha_registro": "2025-03-15", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 7, "nombre": "Luis Mendoza", "email": "luis@mail.com", "telefono": "3107777777", "fecha_nacimiento": "1982-09-08", "ciudad_residencia": "Bogota", "plan_id": 1, "fecha_registro": "2025-04-01", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 8, "nombre": "Claudia Guzman", "email": "claudia@mail.com", "telefono": "3108888888", "fecha_nacimiento": "1997-01-20", "ciudad_residencia": "Medellin", "plan_id": 2, "fecha_registro": "2025-04-10", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 9, "nombre": "Miguel Castro", "email": "miguel@mail.com", "telefono": "3109999999", "fecha_nacimiento": "1991-06-05", "ciudad_residencia": "Cali", "plan_id": 3, "fecha_registro": "2025-05-01", "estado_cuenta": "ACTIVO"},
+        {"usuario_id": 10, "nombre": "Isabel Ruiz", "email": "isabel@mail.com", "telefono": "3110000000", "fecha_nacimiento": "1989-10-12", "ciudad_residencia": "Armenia", "plan_id": 2, "fecha_registro": "2025-05-15", "estado_cuenta": "ACTIVO"}
+    ],
+    "perfiles": [
+        {"perfil_id": 1, "usuario_id": 1, "nombre": "Andres", "avatar": "avatar_1.png", "tipo": "ADULTO"},
+        {"perfil_id": 2, "usuario_id": 1, "nombre": "Niña Andres", "avatar": "avatar_2.png", "tipo": "INFANTIL"},
+        {"perfil_id": 3, "usuario_id": 2, "nombre": "Carmen", "avatar": "avatar_3.png", "tipo": "ADULTO"},
+        {"perfil_id": 4, "usuario_id": 3, "nombre": "Roberto", "avatar": "avatar_4.png", "tipo": "ADULTO"},
+        {"perfil_id": 5, "usuario_id": 3, "nombre": "Hijo Roberto", "avatar": "avatar_5.png", "tipo": "INFANTIL"},
+        {"perfil_id": 6, "usuario_id": 4, "nombre": "Elena", "avatar": "avatar_6.png", "tipo": "ADULTO"},
+        {"perfil_id": 7, "usuario_id": 5, "nombre": "Fernando", "avatar": "avatar_7.png", "tipo": "ADULTO"},
+        {"perfil_id": 8, "usuario_id": 6, "nombre": "Patricia", "avatar": "avatar_8.png", "tipo": "ADULTO"},
+        {"perfil_id": 9, "usuario_id": 6, "nombre": "Hijo Patricia", "avatar": "avatar_9.png", "tipo": "INFANTIL"},
+        {"perfil_id": 10, "usuario_id": 7, "nombre": "Luis", "avatar": "avatar_10.png", "tipo": "ADULTO"},
+        {"perfil_id": 11, "usuario_id": 8, "nombre": "Claudia", "avatar": "avatar_11.png", "tipo": "ADULTO"},
+        {"perfil_id": 12, "usuario_id": 9, "nombre": "Miguel", "avatar": "avatar_12.png", "tipo": "ADULTO"},
+        {"perfil_id": 13, "usuario_id": 10, "nombre": "Isabel", "avatar": "avatar_13.png", "tipo": "ADULTO"}
+    ],
+    "contenido": [
+        {"contenido_id": 1, "titulo": "El Ultimo Amanecer", "anno_lanzamiento": 2024, "duracion_minutos": 118, "sinopsis": "Una historia post-apocalíptica sobre supervivencia", "clasificacion_edad": "+16", "fecha_agregado": "2025-01-15", "es_original": 1, "categoria_nombre": "PELICULA"},
+        {"contenido_id": 2, "titulo": "Amor en Tiempo de Guerra", "anno_lanzamiento": 2023, "duracion_minutos": 125, "sinopsis": "Drama romántico durante el conflicto armado", "clasificacion_edad": "+13", "fecha_agregado": "2025-01-20", "es_original": 0, "categoria_nombre": "PELICULA"},
+        {"contenido_id": 3, "titulo": "Caso Cerrado", "anno_lanzamiento": 2024, "duracion_minutos": null, "sinopsis": "Serie de suspenso sobre un detective", "clasificacion_edad": "+16", "fecha_agregado": "2025-02-01", "es_original": 1, "categoria_nombre": "SERIE"},
+        {"contenido_id": 4, "titulo": "Los Ninos del Sol", "anno_lanzamiento": 2023, "duracion_minutos": null, "sinopsis": "Serie infantil animada", "clasificacion_edad": "TP", "fecha_agregado": "2025-02-15", "es_original": 1, "categoria_nombre": "SERIE"},
+        {"contenido_id": 5, "titulo": "Colombia Verde", "anno_lanzamiento": 2024, "duracion_minutos": 90, "sinopsis": "Documental sobre la biodiversidad colombiana", "clasificacion_edad": "+7", "fecha_agregado": "2025-03-01", "es_original": 0, "categoria_nombre": "DOCUMENTAL"},
+        {"contenido_id": 6, "titulo": "Salsa Classics", "anno_lanzamiento": 2024, "duracion_minutos": 60, "sinopsis": "Las mejores canciones de salsa", "clasificacion_edad": "TP", "fecha_agregado": "2025-03-10", "es_original": 1, "categoria_nombre": "MUSICA"},
+        {"contenido_id": 7, "titulo": "Tech Today", "anno_lanzamiento": 2024, "duracion_minutos": 45, "sinopsis": "Podcast sobre tecnología semanal", "clasificacion_edad": "+7", "fecha_agregado": "2025-03-15", "es_original": 1, "categoria_nombre": "PODCAST"},
+        {"contenido_id": 8, "titulo": "El Silencio del Monte", "anno_lanzamiento": 2024, "duracion_minutos": 105, "sinopsis": "Terror psicológico en las montañas", "clasificacion_edad": "+18", "fecha_agregado": "2025-04-01", "es_original": 0, "categoria_nombre": "PELICULA"},
+        {"contenido_id": 9, "titulo": "La Gran Fuga 2", "anno_lanzamiento": 2023, "duracion_minutos": 130, "sinopsis": "Secuela de la película más vista", "clasificacion_edad": "+13", "fecha_agregado": "2025-04-10", "es_original": 0, "categoria_nombre": "PELICULA"},
+        {"contenido_id": 10, "titulo": "Cronicas Quindianas", "anno_lanzamiento": 2024, "duracion_minutos": null, "sinopsis": "Serie dramática sobre la historia regional", "clasificacion_edad": "+16", "fecha_agregado": "2025-04-15", "es_original": 1, "categoria_nombre": "SERIE"}
+    ],
+    "generos": [],
+    "categorias": [],
+    "favoritos": [
+        {"perfil_id": 1, "contenido_id": 1, "fecha_agregado": "2025-05-01"},
+        {"perfil_id": 1, "contenido_id": 8, "fecha_agregado": "2025-05-10"},
+        {"perfil_id": 3, "contenido_id": 3, "fecha_agregado": "2025-05-03"},
+        {"perfil_id": 4, "contenido_id": 5, "fecha_agregado": "2025-05-04"},
+        {"perfil_id": 6, "contenido_id": 8, "fecha_agregado": "2025-05-10"},
+        {"perfil_id": 8, "contenido_id": 6, "fecha_agregado": "2025-05-11"}
+    ],
+    "resenas": [
+        {"resena_id": 1, "perfil_id": 1, "contenido_id": 1, "calificacion": 5, "texto": "Excelente película", "fecha_publicacion": "2025-05-01"},
+        {"resena_id": 2, "perfil_id": 1, "contenido_id": 2, "calificacion": 4, "texto": "Buen drama", "fecha_publicacion": "2025-05-02"},
+        {"resena_id": 3, "perfil_id": 3, "contenido_id": 3, "calificacion": 5, "texto": "Serie muy addictive", "fecha_publicacion": "2025-05-03"},
+        {"resena_id": 4, "perfil_id": 4, "contenido_id": 5, "calificacion": 4, "texto": "Documental interesante", "fecha_publicacion": "2025-05-04"},
+        {"resena_id": 5, "perfil_id": 6, "contenido_id": 8, "calificacion": 3, "texto": "Da miedo", "fecha_publicacion": "2025-05-10"}
+    ],
+    "reproducciones": [
+        {"reproduccion_id": 1, "perfil_id": 1, "contenido_id": 1, "dispositivo": "TV", "fecha_inicio": "2025-05-01 10:00:00", "fecha_fin": "2025-05-01 11:58:00", "porcentaje_avance": 100},
+        {"reproduccion_id": 2, "perfil_id": 1, "contenido_id": 2, "dispositivo": "COMPUTADOR", "fecha_inicio": "2025-05-02 14:00:00", "fecha_fin": "2025-05-02 15:50:00", "porcentaje_avance": 100},
+        {"reproduccion_id": 3, "perfil_id": 3, "contenido_id": 3, "dispositivo": "CELULAR", "fecha_inicio": "2025-05-03 20:00:00", "fecha_fin": "2025-05-03 20:45:00", "porcentaje_avance": 100},
+        {"reproduccion_id": 4, "perfil_id": 4, "contenido_id": 5, "dispositivo": "TABLET", "fecha_inicio": "2025-05-04 15:00:00", "fecha_fin": "2025-05-04 16:30:00", "porcentaje_avance": 100},
+        {"reproduccion_id": 5, "perfil_id": 2, "contenido_id": 4, "dispositivo": "TV", "fecha_inicio": "2025-05-05 09:00:00", "fecha_fin": "2025-05-05 09:22:00", "porcentaje_avance": 100},
+        {"reproduccion_id": 6, "perfil_id": 6, "contenido_id": 8, "dispositivo": "COMPUTADOR", "fecha_inicio": "2025-05-10 22:00:00", "fecha_fin": null, "porcentaje_avance": 45},
+        {"reproduccion_id": 7, "perfil_id": 8, "contenido_id": 6, "dispositivo": "CELULAR", "fecha_inicio": "2025-05-11 11:00:00", "fecha_fin": "2025-05-11 11:55:00", "porcentaje_avance": 100}
+    ],
+    "reportes": [
+        {"reporte_id": 1, "contenido_id": 8, "perfil_id": 6, "moderador_id": null, "motivo": "Contenido muy violento", "estado": "APROBADO", "fecha_reporte": "2025-05-11", "fecha_resolucion": "2025-05-12"},
+        {"reporte_id": 2, "contenido_id": 1, "perfil_id": 7, "moderador_id": null, "motivo": "No funciona el audio", "estado": "PENDIENTE", "fecha_reporte": "2025-05-15", "fecha_resolucion": null}
+    ],
+    "empleados": [
+        {"empleado_id": 1, "nombre": "Carlos Rodriguez", "email": "carlos@quindioflix.com", "telefono": "3001111111", "cargo": "JEFE_TECNOLOGIA", "departamento_id": 1, "supervisor_id": null},
+        {"empleado_id": 2, "nombre": "Maria Garcia", "email": "maria@quindioflix.com", "telefono": "3002222222", "cargo": "JEFE_CONTENIDO", "departamento_id": 2, "supervisor_id": null},
+        {"empleado_id": 3, "nombre": "Juan Lopez", "email": "juan@quindioflix.com", "telefono": "3003333333", "cargo": "JEFE_MARKETING", "departamento_id": 3, "supervisor_id": null},
+        {"empleado_id": 4, "nombre": "Ana Martinez", "email": "ana@quindioflix.com", "telefono": "3004444444", "cargo": "JEFE_SOPORTE", "departamento_id": 4, "supervisor_id": null},
+        {"empleado_id": 5, "nombre": "Pedro Sanchez", "email": "pedro@quindioflix.com", "telefono": "3005555555", "cargo": "JEFE_FINANZAS", "departamento_id": 5, "supervisor_id": null},
+        {"empleado_id": 6, "nombre": "Laura Diaz", "email": "laura@quindioflix.com", "telefono": "3006666666", "cargo": "GESTOR_CONTENIDO", "departamento_id": 2, "supervisor_id": 2},
+        {"empleado_id": 7, "nombre": "Diego Fernandez", "email": "diego@quindioflix.com", "telefono": "3007777777", "cargo": "MODERADOR", "departamento_id": 4, "supervisor_id": 4},
+        {"empleado_id": 8, "nombre": "Sofia Ramirez", "email": "sofia@quindioflix.com", "telefono": "3008888888", "cargo": "DESARROLLADOR", "departamento_id": 1, "supervisor_id": 1}
+    ],
+    "departamentos": [
+        {"departamento_id": 1, "nombre": "TECNOLOGIA", "jefe_id": 1},
+        {"departamento_id": 2, "nombre": "CONTENIDO", "jefe_id": 2},
+        {"departamento_id": 3, "nombre": "MARKETING", "jefe_id": 3},
+        {"departamento_id": 4, "nombre": "SOPORTE", "jefe_id": 4},
+        {"departamento_id": 5, "nombre": "FINANZAS", "jefe_id": 5}
+    ],
+    "planes": [
+        {"plan_id": 1, "nombre": "BASICO", "precio_mensual": 14900, "num_pantallas": 1, "max_perfiles": 2, "calidad": "SD"},
+        {"plan_id": 2, "nombre": "ESTANDAR", "precio_mensual": 24900, "num_pantallas": 2, "max_perfiles": 3, "calidad": "HD"},
+        {"plan_id": 3, "nombre": "PREMIUM", "precio_mensual": 34900, "num_pantallas": 4, "max_perfiles": 5, "calidad": "4K"}
+    ]
+}
