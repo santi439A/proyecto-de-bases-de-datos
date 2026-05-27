@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
-  const { user, isAuthenticated, logout, perfilActivo } = useAuth()
+  const { user, isAuthenticated, isAdmin, logout, perfilActivo } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -13,12 +13,21 @@ export default function Navbar() {
   return (
     <nav className="bg-secondary sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-8">
-        <Link to="/" className="text-primary text-2xl font-bold">QuindioFlix</Link>
-        {isAuthenticated && (
+        <Link to={isAdmin ? "/admin" : "/"} className="text-primary text-2xl font-bold">QuindioFlix</Link>
+        {isAuthenticated && !isAdmin && (
           <div className="flex gap-6">
             <Link to="/catalogo" className="hover:text-gray-300">Catálogo</Link>
             <Link to="/favoritos" className="hover:text-gray-300">Favoritos</Link>
             <Link to="/perfiles" className="hover:text-gray-300">Perfiles</Link>
+          </div>
+        )}
+        {isAuthenticated && isAdmin && (
+          <div className="flex gap-6">
+            <Link to="/admin" className="hover:text-gray-300">Dashboard</Link>
+            <Link to="/admin/contenido" className="hover:text-gray-300">Contenido</Link>
+            <Link to="/admin/empleados" className="hover:text-gray-300">Empleados</Link>
+            <Link to="/admin/departamentos" className="hover:text-gray-300">Departamentos</Link>
+            <Link to="/admin/reportes" className="hover:text-gray-300">Reportes</Link>
           </div>
         )}
       </div>
@@ -26,12 +35,14 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         {isAuthenticated ? (
           <>
-            {perfilActivo && (
+            {perfilActivo && !isAdmin && (
               <span className="text-sm text-gray-400">
                 Perfil: {perfilActivo.NOMBRE || perfilActivo.nombre}
               </span>
             )}
-            <Link to="/admin" className="text-sm hover:text-gray-300">Admin</Link>
+            {isAdmin && (
+              <span className="text-sm text-primary font-semibold">Admin</span>
+            )}
             <button 
               onClick={handleLogout}
               className="bg-primary px-4 py-2 rounded hover:bg-red-700"

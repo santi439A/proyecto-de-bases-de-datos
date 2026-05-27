@@ -50,13 +50,22 @@ function saveData($file, $data) {
     file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
 }
 
+function requireAdmin() {
+    global $authMiddleware;
+    $decoded = $authMiddleware->requireAuth();
+    if (!isset($decoded['rol']) || $decoded['rol'] !== 'ADMIN') {
+        ResponseHelper::error('Acceso denegado. Se requieren permisos de administrador', 403);
+    }
+    return $decoded;
+}
+
 $data = loadData($dataFile);
 
 if ($method === 'POST' && $uri === '/api/auth/login') {
     $input = json_decode(file_get_contents('php://input'), true);
     
-    if (!isset($input['email'])) {
-        ResponseHelper::error('Email es requerido', 400);
+    if (!isset($input['email']) || !isset($input['password'])) {
+        ResponseHelper::error('Email y contraseña son requeridos', 400);
     }
     
     $user = null;
@@ -67,7 +76,7 @@ if ($method === 'POST' && $uri === '/api/auth/login') {
         }
     }
     
-    if (!$user) {
+    if (!$user || $user['password'] !== $input['password']) {
         ResponseHelper::error('Credenciales inválidas', 401);
     }
     
@@ -87,7 +96,8 @@ if ($method === 'POST' && $uri === '/api/auth/login') {
             'id' => $user['usuario_id'],
             'nombre' => $user['nombre'],
             'email' => $user['email'],
-            'plan' => $plan ? $plan['nombre'] : 'BASICO'
+            'plan' => $plan ? $plan['nombre'] : 'BASICO',
+            'rol' => $user['rol'] ?? 'USUARIO'
         ]
     ]);
 }
@@ -95,7 +105,7 @@ if ($method === 'POST' && $uri === '/api/auth/login') {
 if ($method === 'POST' && $uri === '/api/auth/register') {
     $input = json_decode(file_get_contents('php://input'), true);
     
-    $required = ['nombre', 'email', 'telefono', 'fecha_nacimiento', 'ciudad_residencia', 'plan_id'];
+    $required = ['nombre', 'email', 'password', 'telefono', 'fecha_nacimiento', 'ciudad_residencia', 'plan_id'];
     foreach ($required as $field) {
         if (empty($input[$field])) {
             ResponseHelper::error("Campo $field es requerido", 400);
@@ -113,12 +123,14 @@ if ($method === 'POST' && $uri === '/api/auth/register') {
         'usuario_id' => $usuario_id,
         'nombre' => $input['nombre'],
         'email' => $input['email'],
+        'password' => $input['password'],
         'telefono' => $input['telefono'],
         'fecha_nacimiento' => $input['fecha_nacimiento'],
         'ciudad_residencia' => $input['ciudad_residencia'],
         'plan_id' => (int)$input['plan_id'],
         'fecha_registro' => date('Y-m-d'),
-        'estado_cuenta' => 'ACTIVO'
+        'estado_cuenta' => 'ACTIVO',
+        'rol' => 'USUARIO'
     ];
     
     $data['usuarios'][] = $newUser;
@@ -142,7 +154,8 @@ if ($method === 'POST' && $uri === '/api/auth/register') {
         'user' => [
             'id' => $usuario_id,
             'nombre' => $input['nombre'],
-            'email' => $input['email']
+            'email' => $input['email'],
+            'rol' => 'USUARIO'
         ]
     ], 201);
 }
@@ -325,6 +338,7 @@ if ($method === 'PUT' && preg_match('#^/api/reproduccion/(\d+)/finalizar$#', $ur
 }
 
 if ($method === 'GET' && $uri === '/api/admin/dashboard') {
+    requireAdmin();
     ResponseHelper::success([
         'total_usuarios' => count($data['usuarios']),
         'total_contenido' => count($data['contenido']),
@@ -334,6 +348,7 @@ if ($method === 'GET' && $uri === '/api/admin/dashboard') {
 }
 
 if ($method === 'GET' && $uri === '/api/admin/reportes') {
+    requireAdmin();
     $reportes = [];
     foreach ($data['reportes'] as $r) {
         $contenido = null;
@@ -352,6 +367,7 @@ if ($method === 'GET' && $uri === '/api/admin/reportes') {
 }
 
 if ($method === 'GET' && $uri === '/api/admin/empleados') {
+    requireAdmin();
     $empleados = [];
     foreach ($data['empleados'] as $emp) {
         $dept = null;
@@ -369,6 +385,7 @@ if ($method === 'GET' && $uri === '/api/admin/empleados') {
 }
 
 if ($method === 'GET' && $uri === '/api/admin/departamentos') {
+    requireAdmin();
     $deptos = [];
     foreach ($data['departamentos'] as $d) {
         $jefe = null;
@@ -382,6 +399,190 @@ if ($method === 'GET' && $uri === '/api/admin/departamentos') {
         $deptos[] = $d;
     }
     ResponseHelper::success($deptos);
+}
+
+// =============================================
+// ADMIN CRUD - CONTENIDO
+// =============================================
+if ($method === 'POST' && $uri === '/api/admin/contenido') {
+    requireAdmin();
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (empty($input['titulo']) || empty($input['categoria_id'])) {
+        ResponseHelper::error('Título y categoría son requeridos', 400);
+    }
+    $contenido_id = count($data['contenido']) + 1;
+    $data['contenido'][] = [
+        'contenido_id' => $contenido_id,
+        'categoria_id' => (int)$input['categoria_id'],
+        'titulo' => $input['titulo'],
+        'anno_lanzamiento' => (int)($input['anno_lanzamiento'] ?? date('Y')),
+        'duracion_minutos' => isset($input['duracion_minutos']) ? (int)$input['duracion_minutos'] : null,
+        'sinopsis' => $input['sinopsis'] ?? '',
+        'clasificacion_edad' => $input['clasificacion_edad'] ?? 'TP',
+        'fecha_agregado' => date('Y-m-d'),
+        'es_original' => isset($input['es_original']) ? (int)$input['es_original'] : 0,
+        'empleado_responsable_id' => (int)($input['empleado_responsable_id'] ?? 1),
+        'categoria_nombre' => $input['categoria_nombre'] ?? 'PELICULA'
+    ];
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Contenido creado', 'contenido_id' => $contenido_id], 201);
+}
+
+if ($method === 'PUT' && preg_match('#^/api/admin/contenido/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $input = json_decode(file_get_contents('php://input'), true);
+    $found = false;
+    foreach ($data['contenido'] as &$c) {
+        if ($c['contenido_id'] === $id) {
+            if (isset($input['titulo'])) $c['titulo'] = $input['titulo'];
+            if (isset($input['categoria_id'])) $c['categoria_id'] = (int)$input['categoria_id'];
+            if (isset($input['anno_lanzamiento'])) $c['anno_lanzamiento'] = (int)$input['anno_lanzamiento'];
+            if (isset($input['duracion_minutos'])) $c['duracion_minutos'] = (int)$input['duracion_minutos'];
+            if (isset($input['sinopsis'])) $c['sinopsis'] = $input['sinopsis'];
+            if (isset($input['clasificacion_edad'])) $c['clasificacion_edad'] = $input['clasificacion_edad'];
+            if (isset($input['categoria_nombre'])) $c['categoria_nombre'] = $input['categoria_nombre'];
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        ResponseHelper::error('Contenido no encontrado', 404);
+    }
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Contenido actualizado']);
+}
+
+if ($method === 'DELETE' && preg_match('#^/api/admin/contenido/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $found = false;
+    foreach ($data['contenido'] as $i => $c) {
+        if ($c['contenido_id'] === $id) {
+            array_splice($data['contenido'], $i, 1);
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        ResponseHelper::error('Contenido no encontrado', 404);
+    }
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Contenido eliminado']);
+}
+
+// =============================================
+// ADMIN CRUD - EMPLEADOS
+// =============================================
+if ($method === 'POST' && $uri === '/api/admin/empleados') {
+    requireAdmin();
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (empty($input['nombre']) || empty($input['email']) || empty($input['cargo']) || empty($input['departamento_id'])) {
+        ResponseHelper::error('Nombre, email, cargo y departamento son requeridos', 400);
+    }
+    $empleado_id = count($data['empleados']) + 1;
+    $data['empleados'][] = [
+        'empleado_id' => $empleado_id,
+        'nombre' => $input['nombre'],
+        'email' => $input['email'],
+        'telefono' => $input['telefono'] ?? '',
+        'cargo' => $input['cargo'],
+        'departamento_id' => (int)$input['departamento_id'],
+        'supervisor_id' => isset($input['supervisor_id']) ? (int)$input['supervisor_id'] : null
+    ];
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Empleado creado', 'empleado_id' => $empleado_id], 201);
+}
+
+if ($method === 'PUT' && preg_match('#^/api/admin/empleados/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $input = json_decode(file_get_contents('php://input'), true);
+    $found = false;
+    foreach ($data['empleados'] as &$e) {
+        if ($e['empleado_id'] === $id) {
+            if (isset($input['nombre'])) $e['nombre'] = $input['nombre'];
+            if (isset($input['email'])) $e['email'] = $input['email'];
+            if (isset($input['telefono'])) $e['telefono'] = $input['telefono'];
+            if (isset($input['cargo'])) $e['cargo'] = $input['cargo'];
+            if (isset($input['departamento_id'])) $e['departamento_id'] = (int)$input['departamento_id'];
+            if (isset($input['supervisor_id'])) $e['supervisor_id'] = (int)$input['supervisor_id'];
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) ResponseHelper::error('Empleado no encontrado', 404);
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Empleado actualizado']);
+}
+
+if ($method === 'DELETE' && preg_match('#^/api/admin/empleados/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $found = false;
+    foreach ($data['empleados'] as $i => $e) {
+        if ($e['empleado_id'] === $id) {
+            array_splice($data['empleados'], $i, 1);
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) ResponseHelper::error('Empleado no encontrado', 404);
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Empleado eliminado']);
+}
+
+// =============================================
+// ADMIN CRUD - DEPARTAMENTOS
+// =============================================
+if ($method === 'POST' && $uri === '/api/admin/departamentos') {
+    requireAdmin();
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (empty($input['nombre'])) {
+        ResponseHelper::error('Nombre del departamento es requerido', 400);
+    }
+    $departamento_id = count($data['departamentos']) + 1;
+    $data['departamentos'][] = [
+        'departamento_id' => $departamento_id,
+        'nombre' => $input['nombre'],
+        'jefe_id' => isset($input['jefe_id']) ? (int)$input['jefe_id'] : null
+    ];
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Departamento creado', 'departamento_id' => $departamento_id], 201);
+}
+
+if ($method === 'PUT' && preg_match('#^/api/admin/departamentos/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $input = json_decode(file_get_contents('php://input'), true);
+    $found = false;
+    foreach ($data['departamentos'] as &$d) {
+        if ($d['departamento_id'] === $id) {
+            if (isset($input['nombre'])) $d['nombre'] = $input['nombre'];
+            if (isset($input['jefe_id'])) $d['jefe_id'] = (int)$input['jefe_id'];
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) ResponseHelper::error('Departamento no encontrado', 404);
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Departamento actualizado']);
+}
+
+if ($method === 'DELETE' && preg_match('#^/api/admin/departamentos/(\d+)$#', $uri, $matches)) {
+    requireAdmin();
+    $id = (int)$matches[1];
+    $found = false;
+    foreach ($data['departamentos'] as $i => $d) {
+        if ($d['departamento_id'] === $id) {
+            array_splice($data['departamentos'], $i, 1);
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) ResponseHelper::error('Departamento no encontrado', 404);
+    saveData($dataFile, $data);
+    ResponseHelper::success(['message' => 'Departamento eliminado']);
 }
 
 ResponseHelper::error('Endpoint no encontrado', 404);

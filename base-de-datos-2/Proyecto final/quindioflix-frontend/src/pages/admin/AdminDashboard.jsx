@@ -43,7 +43,11 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Link to="/admin/contenido" className="bg-zinc-800 p-6 rounded-lg hover:bg-zinc-700">
+          <h3 className="font-bold text-lg mb-2">🎬 Gestión de Contenido</h3>
+          <p className="text-gray-400 text-sm">Crear, editar y eliminar películas y series</p>
+        </Link>
         <Link to="/admin/reportes" className="bg-zinc-800 p-6 rounded-lg hover:bg-zinc-700">
           <h3 className="font-bold text-lg mb-2">📋 Gestión de Reportes</h3>
           <p className="text-gray-400 text-sm">Revisar y resolver reportes de usuarios</p>

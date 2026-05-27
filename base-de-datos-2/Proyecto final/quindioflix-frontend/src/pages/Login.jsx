@@ -20,7 +20,11 @@ export default function Login() {
       const { data } = await api.post('/auth/login', { email, password })
       if (data.success) {
         login(data.data.user, data.data.token)
-        navigate('/catalogo')
+        if (data.data.user.rol === 'ADMIN') {
+          navigate('/admin')
+        } else {
+          navigate('/catalogo')
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesión')

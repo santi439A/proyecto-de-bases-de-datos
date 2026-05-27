@@ -15,7 +15,8 @@ class AuthMiddleware
             'exp' => time() + (7 * 24 * 60 * 60),
             'user_id' => $user['usuario_id'] ?? $user['USUARIO_ID'] ?? null,
             'email' => $user['email'] ?? $user['EMAIL'] ?? null,
-            'nombre' => $user['nombre'] ?? $user['NOMBRE'] ?? null
+            'nombre' => $user['nombre'] ?? $user['NOMBRE'] ?? null,
+            'rol' => $user['rol'] ?? 'USUARIO'
         ]));
         $signature = base64_encode(hash_hmac('sha256', "$header.$payload", $this->secretKey, true));
         

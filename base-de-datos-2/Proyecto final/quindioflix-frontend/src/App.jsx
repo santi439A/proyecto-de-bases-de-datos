@@ -11,11 +11,27 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminReportes from './pages/admin/AdminReportes'
 import AdminEmpleados from './pages/admin/AdminEmpleados'
 import AdminDepartamentos from './pages/admin/AdminDepartamentos'
+import AdminContenido from './pages/admin/AdminContenido'
 import Navbar from './components/Navbar'
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth()
-  return isAuthenticated ? children : <Navigate to="/login" />
+  const { isAuthenticated, isAdmin, user } = useAuth()
+  if (!isAuthenticated) return <Navigate to="/login" />
+  return children
+}
+
+function AdminRoute({ children }) {
+  const { isAuthenticated, isAdmin } = useAuth()
+  if (!isAuthenticated) return <Navigate to="/login" />
+  if (!isAdmin) return <Navigate to="/catalogo" />
+  return children
+}
+
+function UserRoute({ children }) {
+  const { isAuthenticated, isAdmin } = useAuth()
+  if (!isAuthenticated) return <Navigate to="/login" />
+  if (isAdmin) return <Navigate to="/admin" />
+  return children
 }
 
 function AppRoutes() {
@@ -26,14 +42,15 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/" element={<Home />} />
-        <Route path="/catalogo" element={<ProtectedRoute><Catalogo /></ProtectedRoute>} />
-        <Route path="/detalle/:id" element={<ProtectedRoute><Detalle /></ProtectedRoute>} />
-        <Route path="/favoritos" element={<ProtectedRoute><Favoritos /></ProtectedRoute>} />
-        <Route path="/perfiles" element={<ProtectedRoute><Perfiles /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/admin/reportes" element={<ProtectedRoute><AdminReportes /></ProtectedRoute>} />
-        <Route path="/admin/empleados" element={<ProtectedRoute><AdminEmpleados /></ProtectedRoute>} />
-        <Route path="/admin/departamentos" element={<ProtectedRoute><AdminDepartamentos /></ProtectedRoute>} />
+        <Route path="/catalogo" element={<UserRoute><Catalogo /></UserRoute>} />
+        <Route path="/detalle/:id" element={<UserRoute><Detalle /></UserRoute>} />
+        <Route path="/favoritos" element={<UserRoute><Favoritos /></UserRoute>} />
+        <Route path="/perfiles" element={<UserRoute><Perfiles /></UserRoute>} />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/contenido" element={<AdminRoute><AdminContenido /></AdminRoute>} />
+        <Route path="/admin/reportes" element={<AdminRoute><AdminReportes /></AdminRoute>} />
+        <Route path="/admin/empleados" element={<AdminRoute><AdminEmpleados /></AdminRoute>} />
+        <Route path="/admin/departamentos" element={<AdminRoute><AdminDepartamentos /></AdminRoute>} />
       </Routes>
     </>
   )
